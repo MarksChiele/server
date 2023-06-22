@@ -91,13 +91,15 @@ app.post('/somar', (req, res) => {
     } else {
       if (results.length > 0) {
         const quantidadeAtual = results[0].qtde;
-        console.log(results);
-        if (quantidadeAtual >= quantidade) {
-          // Subtrair a quantidade informada do item
+        console.log(results);// quantidade atual antes do update
+        console.log(quantidade);// quantidade digitada
+       
           const novaQuantidade = quantidadeAtual + quantidade;
-
+           
           // Atualizar a quantidade no banco de dados
           const updateQuery = `UPDATE stock.produto SET qtde = ${novaQuantidade} WHERE idproduto = ${id}`;
+          console.log(novaQuantidade);// nova
+
           connection.query(updateQuery, (error, results) => {
             if (error) {
               res.status(500).json({ error });
@@ -105,9 +107,7 @@ app.post('/somar', (req, res) => {
               res.json({ success: true });
             }
           });
-        } else {
-          res.json({ success: false, message: 'Quantidade insuficiente.' });
-        }
+        
       } else {
         res.json({ success: false, message: 'Item não encontrado.' });
       }
